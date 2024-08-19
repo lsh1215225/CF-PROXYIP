@@ -54,7 +54,8 @@ def update_dns_record(record_id, name, cf_ip):
     data = {
         'type': 'A',
         'name': name,
-        'content': cf_ip
+        'content': cf_ip,
+        'ttl': 60
     }
 
     response = requests.put(url, headers=headers, json=data)
@@ -91,7 +92,7 @@ def main():
     dns_records = get_dns_records(CF_DNS_NAME)
     push_plus_content = []
     # 遍历 IP 地址列表
-    for index, ip_address in enumerate(ip_addresses[:10]):
+    for index, ip_address in enumerate(ip_addresses[:5]):
         # 执行 DNS 变更
         dns = update_dns_record(dns_records[index], CF_DNS_NAME, ip_address)
         push_plus_content.append(dns)

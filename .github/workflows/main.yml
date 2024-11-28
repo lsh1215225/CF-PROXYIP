@@ -1,8 +1,6 @@
 name: 'dns_cf_push'
 
 on:
-  schedule:
-    - cron: '* */4 * * *'
   workflow_dispatch:
   push:
     branches: 

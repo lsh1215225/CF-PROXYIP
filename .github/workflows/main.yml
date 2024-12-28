@@ -1,9 +1,13 @@
 name: 'dns_cf_push'
 
-on:
-  workflow_dispatch:
-  push:
+permissions:
+  contents: write
 
+on:
+  push:
+    paths:
+      - proxyip.txt # 根据变量定义的文件名，需要手动指定
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest

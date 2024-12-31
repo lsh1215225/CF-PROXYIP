@@ -4,13 +4,14 @@ import time
 import os
 import json
 
+
 # API 密钥
-CF_API_TOKEN    =   os.environ["CF_API_TOKEN"]
-CF_ZONE_ID      =   os.environ["CF_ZONE_ID"]
-CF_DNS_NAME     =   os.environ["CF_DNS_NAME"]
+CF_API_TOKEN = os.environ["CF_API_TOKEN"]
+CF_ZONE_ID = os.environ["CF_ZONE_ID"]
+CF_DNS_NAME = os.environ["CF_DNS_NAME"]
 
 # pushplus_token
-PUSHPLUS_TOKEN  =   os.environ["PUSHPLUS_TOKEN"]
+PUSHPLUS_TOKEN = os.environ["PUSHPLUS_TOKEN"]
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 CHAT_ID = os.environ["CHAT_ID"]
@@ -20,19 +21,16 @@ headers = {
     'Content-Type': 'application/json'
 }
 
-def get_cf_speed_test_ip(timeout=10, max_retries=5):
-    for attempt in range(max_retries):
-        try:
-            # 发送 GET 请求，设置超时
-            response = requests.get('proxyip.txt', timeout=timeout)
-            # 检查响应状态码
-            if response.status_code == 200:
-                return response.text
-        except Exception as e:
-            traceback.print_exc()
-            print(f"get_cf_speed_test_ip Request failed (attempt {attempt + 1}/{max_retries}): {e}")
-    # 如果所有尝试都失败，返回 None 或者抛出异常，根据需要进行处理
+
+def get_cf_speed_test_ip():
+    try:
+        with open('proxyip.txt', 'r') as file:
+            return file.read().strip()  # 读取文件内容并去除首尾空白字符
+    except Exception as e:
+        traceback.print_exc()
+        print(f"读取proxyip.txt文件失败: {e}")
     return None
+
 
 # 获取 DNS 记录
 def get_dns_records(name):
@@ -47,6 +45,7 @@ def get_dns_records(name):
         return def_info
     else:
         print('Error fetching DNS records:', response.text)
+
 
 # 更新 DNS 记录
 def update_dns_record(record_id, name, cf_ip):
@@ -70,6 +69,7 @@ def update_dns_record(record_id, name, cf_ip):
             time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + " ---- MESSAGE: " + str(name))
         return "ip:" + str(cf_ip) + "解析" + str(name) + "失败"
 
+
 # 消息推送
 def push_plus(content):
     url = f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage'
@@ -83,6 +83,7 @@ def push_plus(content):
     body = json.dumps(data).encode(encoding='utf-8')
     headers = {'Content-Type': 'application/json'}
     requests.post(url, data=body, headers=headers)
+
 
 # 主函数
 def main():
@@ -98,6 +99,7 @@ def main():
         push_plus_content.append(dns)
 
     push_plus('\n'.join(push_plus_content))
+
 
 if __name__ == '__main__':
     main()

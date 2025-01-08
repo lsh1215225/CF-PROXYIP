@@ -113,41 +113,41 @@ fi
 }
 
 function speedtest(){
-rm -rf log.txt speed.txt
-curl --resolve speed.cloudflare.com:$2:$1 https://speed.cloudflare.com:$2/__down?bytes=300000000 -o /dev/null --connect-timeout 2 --max-time 5 -w "HTTPCODE"_%{http_code}"\n"> log.txt 2>&1
-status=$(cat log.txt | grep HTTPCODE | awk -F_ '{print $2}')
-if [ $status == 200 ]
-then
-	cat log.txt | tr '\r' '\n' | awk '{print $NF}' | sed '1,3d;$d' | grep -v 'k\|M\|received' >> speed.txt
-	for i in `cat log.txt | tr '\r' '\n' | awk '{print $NF}' | sed '1,3d;$d' | grep k | sed 's/k//g'`
-	do
-		declare -i k
-		k=$i
-		k=k*1024
-		echo $k >> speed.txt
-	done
-	for i in `cat log.txt | tr '\r' '\n' | awk '{print $NF}' | sed '1,3d;$d' | grep M | sed 's/M//g'`
-	do
-		i=$(echo | awk '{print '$i'*10 }')
-		declare -i M
-		M=$i
-		M=M*1024*1024/10
-		echo $M >> speed.txt
-	done
-	declare -i max
-	max=0
-	for i in `cat speed.txt`
-	do
-		if [ $i -ge $max ]
-		then
-			max=$i
-		fi
-	done
-else
-	max=0
-fi
-rm -rf log.txt speed.txt
-echo $max
+    rm -rf log.txt speed.txt
+    curl --resolve speedtest.googlefiber.net:$2:$1 https://speedtest.googlefiber.net:$2/__down?bytes=300000000 -o /dev/null --connect-timeout 2 --max-time 5 -w "HTTPCODE"_%{http_code}"\n"> log.txt 2>&1
+    status=$(cat log.txt | grep HTTPCODE | awk -F_ '{print $2}')
+    if [ $status == 200 ]
+    then
+        cat log.txt | tr '\r' '\n' | awk '{print $NF}' | sed '1,3d;$d' | grep -v 'k\|M\|received' >> speed.txt
+        for i in `cat log.txt | tr '\r' '\n' | awk '{print $NF}' | sed '1,3d;$d' | grep k | sed 's/k//g'`
+        do
+            declare -i k
+            k=$i
+            k=k*1024
+            echo $k >> speed.txt
+        done
+        for i in `cat log.txt | tr '\r' '\n' | awk '{print $NF}' | sed '1,3d;$d' | grep M | sed 's/M//g'`
+        do
+            i=$(echo | awk '{print '$i'*10 }')
+            declare -i M
+            M=$i
+            M=M*1024*1024/10
+            echo $M >> speed.txt
+        done
+        declare -i max
+        max=0
+        for i in `cat speed.txt`
+        do
+            if [ $i -ge $max ]
+            then
+                max=$i
+            fi
+        done
+    else
+        max=0
+    fi
+    rm -rf log.txt speed.txt
+    echo $max
 }
 
 function cloudflarerealip(){

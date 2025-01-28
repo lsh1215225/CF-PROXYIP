@@ -12,5 +12,11 @@ df_sorted = df.sort_values(by='峰值速度数值', ascending=False)
 # 添加双重筛选条件：国家为US且IP类型为隧道
 df_gj = df_sorted[(df_sorted['国家'] == 'SG') & (df_sorted['IP类型'] == '隧道')]
 
+# 使用正则表达式匹配IPv6地址
+ipv6_pattern = r'^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$'
+
+# 筛选出回源IP是IPv6地址的行
+df_gj_ipv6 = df_gj[df_gj['回源IP'].str.contains(ipv6_pattern, na=False)]
+
 # 将排序后的DataFrame保存回CSV文件
-df_gj.to_csv('latest_sorted.csv', index=False)
+df_gj_ipv6.to_csv('latest_sorted.csv', index=False)

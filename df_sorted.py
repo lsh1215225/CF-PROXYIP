@@ -10,7 +10,7 @@ df['峰值速度数值'] = df['峰值速度'].str.replace(' kB/s', '').astype(fl
 df_sorted = df.sort_values(by='峰值速度数值', ascending=False)
 
 # 添加双重筛选条件：国家为US且IP类型为隧道
-df_gj = df_sorted[(df_sorted['国家'] == 'US')]
+df_gj = df_sorted[(df_sorted['国家'] == 'DE')]
 
 # 使用正则表达式匹配IPv6地址
 #ipv6_pattern = r'^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$'

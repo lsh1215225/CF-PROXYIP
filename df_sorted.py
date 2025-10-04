@@ -19,4 +19,4 @@ df_gj = df_sorted[(df_sorted['国家'] == 'DE')]
 #df_gj_ipv6 = df_gj[df_gj['回源IP'].str.contains(ipv6_pattern, na=False)]
 
 # 将排序后的DataFrame保存回CSV文件
-df_gj.to_csv('latest_sorted.csv', index=False)
+df_sorted.to_csv('latest_sorted.csv', index=False)

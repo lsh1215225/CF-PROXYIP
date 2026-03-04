@@ -36,8 +36,7 @@ jobs:
         run: |
           rm -rf *.csv 
           wget -O IPDBproxy.txt  https://raw.githubusercontent.com/ymyuuu/IPDB/main/BestProxy/proxy.txt
-          wget -O IPDBproxy2.txt  https://raw.githubusercontent.com/ymyuuu/IPDB/main/BestProxy/proxy.txt
-          cat IPDBproxy.txt IPDBproxy2.txt >> ip.txt 
+          cat IPDBproxy.txt >> ip.txt 
           rm -rf IPDBproxy.txt
           rm -rf IPDBproxy2.txt
           chmod +x ./iptest.sh
